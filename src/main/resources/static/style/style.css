@@ -1,0 +1,28 @@
+#parent {
+	width: 100%;
+	height: 50%;
+}
+.childs {
+	width: 20%;
+	height: 100%;
+	padding-left: 3px;
+	border: 1px solid #999;
+	display:inline-block;
+	white-space:normal;
+	font-size:13px;
+	vertical-align:top;
+	margin: 7px 7px;
+}
+
+.info {
+	display: table;
+	white-space: normal;
+}
+
+.childs td {
+	width: 100%;
+}
+
+#parent h2 {
+	text-align: center;
+}
