@@ -1,95 +1,23 @@
 import React from "react";
 import ReactDom from "react-dom";
 import $ from 'jquery';
-import styles from '../style/style.css';
+import 'antd/dist/antd.less';
+import {Button, Input, Form, Layout} from 'antd';
+const {Header, Footer, Sider, Content} = Layout;
 
-class WeatherIcon extends React.Component {
+import {CardList} from './cardList.jsx';
+const FormItem = Form.Item;
+
+
+
+class MainElement extends React.Component {
 	constructor(props) {
 		super(props);
-	}
-
-	render() {
-		return (
-				<img src={'http://openweathermap.org/img/w/' + this.props.code + '.png'}/>
-		)
-	}
-}
-
-class Card extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		return (
-				<div className={styles.childs}>
-
-					<table>
-						<caption>
-							<h3>Дата:{this.props.date}</h3>
-						</caption>
-						<tr>
-							<td>
-								<div className={styles.info}>
-									<label>Средняя температура:</label>
-									<label>{this.props.temp}</label>
-								</div>
-								<div className={styles.info}>
-									<label>Минимум:</label>
-									<label>{this.props.minTemp}</label>
-								</div>
-								<div className={styles.info}>
-									<label>Максимум:</label>
-									<label>{this.props.maxTemp}</label>
-								</div>
-								<div className={styles.info}>
-									<label>Влажость:{this.props.humidity}%</label>
-									<label></label>
-								</div>
-							</td>
-							<td>
-								<WeatherIcon code={this.props.weather}/>
-							</td>
-						</tr>
-					</table>
-				</div>
-		);
-	}
-}
-
-class CardList extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		return (
-				<div id={styles.parent}>
-					<div>
-						<h2>Город: {this.props.city}</h2>
-					</div>
-
-					{this.props.list.filter(function (child) {
-						return child.dt_txt.endsWith('12:00:00');
-					}).map(function (child) {
-						return (
-								<Card temp={child.main.temp} minTemp={child.main.temp_min} maxTemp={child.main.temp_max}
-								      date={child.dt_txt} weather={child.weather[0].icon} humidity={child.main.humidity} key={child.dt}/>
-						)
-					})}
-
-				</div>
-		);
-	}
-}
-
-class NameForm extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {value: '', list: [], city: ''};
+		this.state = {value: '', list: [], city: '', windowHeight: window.innerHeight};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+
 	}
 
 	handleChange(event) {
@@ -97,36 +25,47 @@ class NameForm extends React.Component {
 	}
 
 	handleSubmit(event) {
-
 		$.ajax({
-			url: '/testAjax2',
+			url: '/requestForecast',
 			dataType: 'json',
 			cache: false,
 			type: 'GET',
-			data: {value1: this.state.value},
-			success: function (data) {
+			data: {city: this.state.value}, success: function (data) {
 				this.setState({list: data.list});
 				this.setState({city: data.city.name});
 			}.bind(this),
 			error: function (xhr, status, err) {
-				console.error(this.props.url, status, err.toString());
+				alert(xhr.responseJSON.message);
 			}.bind(this)
 		});
 	}
 
 	render() {
+		const minHeightConst = this.state.windowHeight;
 		return (
 				<div>
-					<label>
-						Name:
-						<input type="text" value={this.state.value} onChange={this.handleChange} />
-					</label>
+					<Layout style={{ minHeight: minHeightConst, height: '1px'}}>
+						<Header style={{ textAlign: 'center'}}>
+							<h2 style={{ color: 'white' }}>Получение прогноза погоды</h2>
+						</Header>
+						<Content style={{ padding: '0 50px', height: '100%' }}>
+							<Form layout="inline" style={{ margin: 'auto', width: '20%', padding: '10px' }}>
+								<FormItem required="true">
+									<Input type="text" value={this.state.value} onChange={this.handleChange}
+									       placeholder="Введите название города (английский)"/>
+								</FormItem>
+								<FormItem>
+									<Button onClick={this.handleSubmit}>Получить прогноз</Button>
+								</FormItem>
+							</Form>
+							<CardList list={this.state.list} city={this.state.city} />
+						</Content>
+						<Footer/>
+					</Layout>
 
-					<button onClick={this.handleSubmit}>sdd</button>
-					<CardList list={this.state.list} city={this.state.city}/>
 				</div>
 		);
 	}
 }
 
-ReactDom.render(<NameForm />, document.getElementById('react'));
+ReactDom.render(<MainElement />, document.getElementById('react'));

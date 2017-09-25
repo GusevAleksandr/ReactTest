@@ -8,14 +8,14 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>demo2</name>
-	<description>Demo project for Spring Boot</description>
+	<name>testReact</name>
+	<description>testReact</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.0.M1</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>1.5.5.RELEASE</version>
+		<relativePath/>
 	</parent>
 
 	<properties>
@@ -30,6 +30,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 
 		<dependency>
@@ -65,7 +71,6 @@
 			<version>1.4.192</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -77,6 +82,13 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.1.6.Final</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+
 
 	</dependencies>
 
@@ -121,7 +133,6 @@
 						</goals>
 						<configuration>
 							<arguments>install</arguments>
-							<!--<npmRegistryURL>http://some_url</npmRegistryURL>-->
 						</configuration>
 					</execution>
 					<execution>

@@ -9,7 +9,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
- * TODO: comment
+ * pojo-объект дло описания таблицы
+ * с прогнозом погоды в БД.
+ * Храним название гороаа и сам полученыый json.
+ * В принципе, можно было бы заниматься парсингом json на стороне бека
+ * и разбить структуру на большее кол-во таблиц,
+ * но т.к. фронт отдаем снова json, то решил просто хранить его в CLOB'е
  * @author gusev.aleksandr
  * @since 22.09.2017
  */
